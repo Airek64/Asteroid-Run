@@ -44,10 +44,13 @@ Game.GameOver.prototype = {
         
         this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
 
-        this.text = this.game.add.text(130, 350, "Press Enter to Start Again", this.style);
+        this.text = this.game.add.text(150, 250, "Your High Score: " + Game.highscore, this.style);
         this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         
-        this.text2 = this.game.add.text(130, 450, "Press Q to Quit to Main Menu", this.style);
+        this.text = this.game.add.text(150, 350, "Press Enter to Start Again", this.style);
+        this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        
+        this.text2 = this.game.add.text(150, 450, "Press Q to Quit to Main Menu", this.style);
         this.text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         
     },

@@ -52,6 +52,10 @@ Game.LevelComplete.prototype = {
 
         this.text = this.game.add.text(130, 100, "Select Damage to Fix", this.style);
         this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        if (Game.level == 4){
+            this.text = this.game.add.text(130, 50, "Holy Shit! Did you just do that??", this.style);
+            this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        }
         
         var line = 260;
         this.options = [];

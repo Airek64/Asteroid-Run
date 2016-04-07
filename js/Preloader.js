@@ -24,6 +24,7 @@ Game.Preloader.prototype = {
         Game.asteroidSpawner = new Game.AsteroidSpawner(this.game);
         Game.distance = 0;
         Game.level = 1;
+        Game.highscore = 0;
 
 	},
 

@@ -123,6 +123,8 @@ Game.Level1.prototype = {
         }
         
         if (Game.player.health <= 0) {
+            if (Game.distance > Game.highscore)
+                Game.highscore = Game.distance;
             Game.distance = 0;
             Game.level = 1;
             Game.player.health = 100;
