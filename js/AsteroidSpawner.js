@@ -2,6 +2,7 @@ Game.AsteroidSpawner = function (game) {
     
     this.game = game;
     this.asteroids = null;
+    this.speed = null;
     
 }
 
@@ -17,15 +18,22 @@ Game.AsteroidSpawner.prototype = {
             a.name = 'asteroid' + i;
             a.exists = false;
             a.visible = false;
+            a.anchor.set(0.5,0.5);
+            var mass = Math.random() * 1.5 - 0.25;
+            a.scale.x = mass;
+            a.scale.y = mass;
+            a.body.setSize(a.width * 0.9, a.height * 0.9);
             a.body.bounce.setTo(1,1);
             a.body.allowRotation = true;
             a.checkWorldBounds = true;
             a.outOfBoundsKill = true;
         }
+        
+        this.speed = -250;
     },
     
     update: function () {
-        this.asteroids.setAll("body.velocity.x", -250);
+        this.asteroids.setAll("body.velocity.x", this.speed);
     },
     
     spawnAsteroid: function (){
@@ -34,7 +42,7 @@ Game.AsteroidSpawner.prototype = {
         
         if (asteroid) {
             asteroid.reset(1024, Math.random() * 768);
-            asteroid.body.velocity.x = -250;
+            //asteroid.body.velocity.x = -250;
             asteroid.body.velocity.y = Math.random() * 40 - 20;
         }
     }

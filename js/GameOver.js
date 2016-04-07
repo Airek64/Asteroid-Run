@@ -1,4 +1,4 @@
-Game.Game = function (game) {
+Game.GameOver = function (game) {
 
     //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
 
@@ -22,15 +22,16 @@ Game.Game = function (game) {
     this.ground = null;
     this.fullScreenToggle = null;
     this.cursors = null;
+    this.confirmButton = null;
+    this.style = null;
+    this.text = null;
+    this.text2 = null; 
 };
 
-Game.Game.prototype = {
+Game.GameOver.prototype = {
 
     create: function () {
         
-        
-
-        this.world.resize(4096, 4096);
 
         this.fullScreenToggle = this.input.keyboard.addKey(Phaser.Keyboard.F);
         this.fullScreenToggle.onUp.add(this.goFull, this);
@@ -38,11 +39,26 @@ Game.Game.prototype = {
         this.quitButton = this.input.keyboard.addKey(Phaser.Keyboard.Q);
         this.quitButton.onUp.add(this.quitGame, this);
         
+        this.confirmButton = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.confirmButton.onUp.add(this.startGame, this);
+        
+        this.style = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
+
+        this.text = this.game.add.text(130, 350, "Press Enter to Start Again", this.style);
+        this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        
+        this.text2 = this.game.add.text(130, 450, "Press Q to Quit to Main Menu", this.style);
+        this.text2.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+        
     },
 
     update: function () {
         
     },
+    
+    startGame: function (pointer) {
+		this.state.start('Level1');
+	},   
 
     quitGame: function () {
         //reset variables
