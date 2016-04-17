@@ -19,18 +19,30 @@ Game.LevelComplete = function (game) {
     this.physics;   //  the physics manager (Phaser.Physics)
     this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
 
-    this.ground = null;
-    this.fullScreenToggle = null;
+    
+    //Control Variables: Quit, Confirm, and Up-Pressed, Down-Pressed
+    this.cursors = null;
+
+    
     this.quitButton = null;
     this.confirmButton = null;
-    this.cursors = null;
+
+    this.upPressed = null;
+    this.downPressed = null;
+    
+    //Text Variables:
     this.style = null;
     this.style2 = null;
     this.text = null;
+    
+    
+    
+    this.ground = null;
+    this.fullScreenToggle = null;
+    
+    //Selection Variables:
     this.selection = null;
     this.options = null;
-    this.upPressed = null;
-    this.downPressed = null;
 };
 
 Game.LevelComplete.prototype = {
@@ -107,7 +119,7 @@ Game.LevelComplete.prototype = {
     },
     
     startGame: function (pointer) {
-        if (this.selection != this.options.length) {
+        if (this.selection != this.options.length -1) {
             var size = Game.player.damages.length;
             Game.player.damages = [];
             for (var i = 0; i < size; i++){

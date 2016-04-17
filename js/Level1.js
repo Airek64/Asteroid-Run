@@ -116,6 +116,8 @@ Game.Level1.prototype = {
         
         //this.game.physics.arcade.collide(Game.player.sprite, Game.asteroidSpawner.asteroids);
         //this.game.physics.arcade.collide(Game.asteroidSpawner.asteroids, Game.asteroidSpawner.asteroids);
+        
+        //Every asteroid of any type collides with every asteroid of any type.
         this.game.physics.arcade.collide(Game.asteroidSpawner.largeAsteroids, Game.asteroidSpawner.largeAsteroids);
         this.game.physics.arcade.collide(Game.asteroidSpawner.largeAsteroids, Game.asteroidSpawner.standardAsteroids);
         this.game.physics.arcade.collide(Game.asteroidSpawner.largeAsteroids, Game.asteroidSpawner.smallAsteroids);
@@ -169,6 +171,7 @@ Game.Level1.prototype = {
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
 //        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.tinyAsteroids, this.playerHitAsteroid, null, this);
         
+        //Update player's healthbar.
         this.healthbar.width = Game.player.health * 5;
         
         Game.distance += -Game.asteroidSpawner.speed / 100;
@@ -301,5 +304,6 @@ Game.Level1.prototype = {
         this.game.debug.text("Distance: " + Math.floor(Game.distance), 800, 20);
         //this.game.debug.text("damage types: " + Game.player.damageTypes, 10, 680);
         this.game.debug.text("damages: " + Game.player.damages, 10, 700);
+        this.game.debug.text("Health: " + Game.player.health, 10, 650);
     }
 };
