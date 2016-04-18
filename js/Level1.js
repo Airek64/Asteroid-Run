@@ -35,6 +35,12 @@ Game.Level1 = function (game) {
     this.tinyAsteroidTimer = null;
     this.tinyAsteroidSpawnRate = null;
     
+    this.largeAsteroidBaseSpawnRate = 1200;
+    this.smallAsteroidBaseSpawnRate = 800;
+    this.standardAsteroidBaseSpawnRate = 600;
+    this.tinyAsteroidBaseSpawnRate = 2000;
+    
+    
     this.healthbar = null;
     this.hitTimer = null;
     this.style = null;
@@ -76,13 +82,13 @@ Game.Level1.prototype = {
 //        this.asteroidSpawnRate = 150;
         
         this.largeAsteroidTimer = 1000;
-        this.largeAsteroidSpawnRate = 1200;
+        this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate;
         this.smallAsteroidTimer = 900;
-        this.smallAsteroidSpawnRate = 800;
+        this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate;
         this.standardAsteroidTimer = 700;
-        this.standardAsteroidSpawnRate = 600;
+        this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
         this.tinyAsteroidTimer = 1200;
-        this.tinyAsteroidSpawnRate = 2000;
+        this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
         
         this.tester = 0;
         
@@ -113,6 +119,8 @@ Game.Level1.prototype = {
         
         Game.player.update();
         Game.asteroidSpawner.update();
+        this.asteroidRateChange(Game.player);
+        
         
         //this.game.physics.arcade.collide(Game.player.sprite, Game.asteroidSpawner.asteroids);
         //this.game.physics.arcade.collide(Game.asteroidSpawner.asteroids, Game.asteroidSpawner.asteroids);
@@ -281,6 +289,35 @@ Game.Level1.prototype = {
         asteroid.kill();
         laser.kill();
     },
+    
+    
+    //Regulates the rate at which asteroids spawn. As you go faster (the right cursor is held down, for //lack of any other metric), the asteroid spawn rate becomes faster as well. Vice versa for going //slower.
+    
+    
+    asteroidRateChange: function(player){
+        if(player.cursors.right.isDown && !player.checkForDamageType('lowerSpeed')){
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate - 500;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate - 500;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate - 500;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate - 500;
+        }
+        else if(player.cursors.left.isDown){
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate + 500;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate + 500;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate + 500;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate + 500;
+        }
+        
+        else{
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
+        }
+        
+        
+    },
+    
 
     quitGame: function () {
         //reset variables
