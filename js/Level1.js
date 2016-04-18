@@ -252,24 +252,16 @@ Game.Level1.prototype = {
         laser.kill();
     },
     
-    laserHitLargeAsteroid: function (laser, asteroid) {
-        
+    laserHitLargeAsteroid: function (laser, asteroid) {    
         laser.kill();
-        
-//        var newAsteroid = Game.asteroidSpawner.smallAsteroids.getFirstExists(false);
-//        
-//        if (newAsteroid) {
-//            newAsteroid.reset(asteroid.x + (Math.random() + (5 - 2) + 2), asteroid.y + (Math.random() + (5 - 2) + 2));
-//            newAsteroid.body.velocity.y = Math.random() * 40 - 20;
-//        }
-//        
-//        asteroid = Game.asteroidSpawner.smallAsteroids.getFirstExists(false);
-//        
-//        if (newAsteroid) {
-//            newAsteroid.reset(asteroid.x + (Math.random() + (10 - 2) + 2), asteroid.y - (Math.random() + (10 - 2) + 2));
-//            newAsteroid.body.velocity.y = Math.random() * 40 - 20;
-//        }
-        
+        for (var i=-1; i<2; i++) {
+            var newAsteroid = Game.asteroidSpawner.smallAsteroids.getFirstExists(false);
+            if (newAsteroid!=null) {
+                newAsteroid.reset(asteroid.x + (Math.random()*20*i), asteroid.y + (Math.random()*20*i));
+                newAsteroid.body.velocity.y = Math.random() * 20;
+                newAsteroid.body.velocity.x = asteroid.body.velocity.x-(Math.random()*20);
+            }
+        }
         asteroid.kill();
         
     },
