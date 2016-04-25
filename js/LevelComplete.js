@@ -119,7 +119,7 @@ Game.LevelComplete.prototype = {
             Game.player.health += 20;
             if (Game.player.health > 100) Game.player.health = 100;
         }
-		this.state.start('Level1');
+		this.state.start('Level2');
 	}, 
 
     quitGame: function () {

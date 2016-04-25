@@ -21,6 +21,7 @@ Game.Preloader.prototype = {
 
 	create: function () {
         Game.player = new Game.Player(this.game);
+        Game.enemy = new Game.Enemy(this.game);
         Game.asteroidSpawner = new Game.AsteroidSpawner(this.game);
         Game.distance = 0;
         Game.level = 1;
