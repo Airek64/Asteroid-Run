@@ -30,12 +30,12 @@ Game.Level2.prototype = {
         this.text = this.game.add.text(10, 20, "Hull", this.style);
         this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         
-        Game.player.add(800, 100);
-        Game.enemy.add(100, 100);
+        Game.player.add(100, 100);
+        Game.enemy.add(900, 100, "left");
     },
     update: function () {
         Game.player.update();
-        Game.enemy.update();
+        Game.enemy.update2();
     },
     quitGame: function () {
         //reset variables
