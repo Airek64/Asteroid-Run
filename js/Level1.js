@@ -103,6 +103,13 @@ Game.Level1.prototype = {
         this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         
         this.hitTimer = 0;
+        
+        //Testing Mine!
+        
+        //Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
+        
+        
+        
     },
 
     update: function () {
@@ -118,6 +125,9 @@ Game.Level1.prototype = {
         
         
         Game.player.update();
+        
+        //Game.explosivemine.update();
+        
         Game.asteroidSpawner.update();
         this.asteroidRateChange(Game.player);
         
