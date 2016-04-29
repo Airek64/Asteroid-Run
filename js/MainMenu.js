@@ -37,7 +37,7 @@ Game.MainMenu.prototype = {
 	},
 
 	startGame: function (pointer) {
-		this.state.start('Level1');
+		this.state.start('Level2');
 	},    
     
     goFull: function(pointer){
