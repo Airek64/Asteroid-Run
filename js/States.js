@@ -1,0 +1,12 @@
+window.onload = function() {
+	var game = new Phaser.Game(1024, 768, Phaser.AUTO, 'gameContainer');
+	//	Add the States your game has.
+	game.state.add('Boot', Game.Boot);
+	game.state.add('Preloader', Game.Preloader);
+	game.state.add('MainMenu', Game.MainMenu);
+	game.state.add('Level1', Game.Level1);
+    game.state.add('LevelComplete', Game.LevelComplete);
+    game.state.add('GameOver', Game.GameOver);
+	//	Start the Boot state.
+	game.state.start('Boot');
+};
