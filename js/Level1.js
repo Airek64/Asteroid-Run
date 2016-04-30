@@ -126,7 +126,7 @@ Game.Level1.prototype = {
         
         Game.player.update();
         
-        Game.explosivemine.update();
+        Game.explosivemine.update(Game.player);
         
         Game.asteroidSpawner.update();
         this.asteroidRateChange(Game.player);
