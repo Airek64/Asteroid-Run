@@ -43,7 +43,7 @@ Game.ExplosiveMine.prototype = {
         this.initX = x;
         this.initY = y;
         
-        this.sprite = game.add.sprite(x,y,'explosiveMine');
+        this.sprite = this.game.add.sprite(x,y,'explosiveMine');
         
         //Physics for the sprite here!
         
@@ -76,12 +76,12 @@ Game.ExplosiveMine.prototype = {
     
     oscillate: function(){
         
-        if(goingDown){
-            this.sprite.velocity.y = this.baseSpeed;
+        if(this.goingDown){
+            this.sprite.body.velocity.y = this.baseSpeed;
         }
         
-        else if(goingUp){
-            this.sprite.velocity.y = -this.baseSpeed;
+        else if(this.goingUp){
+            this.sprite.body.velocity.y = -this.baseSpeed;
         }
         
         if(this.sprite.y < 0){

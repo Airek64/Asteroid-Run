@@ -106,7 +106,7 @@ Game.Level1.prototype = {
         
         //Testing Mine!
         
-        //Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
+        Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
         
         
         
@@ -126,7 +126,7 @@ Game.Level1.prototype = {
         
         Game.player.update();
         
-        //Game.explosivemine.update();
+        Game.explosivemine.update();
         
         Game.asteroidSpawner.update();
         this.asteroidRateChange(Game.player);
