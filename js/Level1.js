@@ -17,6 +17,7 @@ Game.Level1 = function (game) {
     this.healthbar = null;
     this.hitTimer = null;
     this.style = null;
+    this.yellowStyle = null;
     this.text = null;
     this.bg1 = null;
     this.bg2 = null;
@@ -70,8 +71,10 @@ Game.Level1.prototype = {
         
         // add new text style
         this.style = { font: "bold 16px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-
+        this.yellowStyle = { font: "bold 16px Arial", fill: "#ff0", boundsAlignH: "center", boundsAlignV: "middle"};
+        
         // add text
+        this.text = this.game.add.text(900, 20, "Money: " + Game.player.money, this.yellowStyle);
         this.text = this.game.add.text(10, 20, "Hull", this.style);
         this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
         
@@ -152,11 +155,13 @@ Game.Level1.prototype = {
         // change level once distance exceeds some point
         if (Game.distance >= 10000 * Game.level) { // right now level multiplies the distance needed to go before next lvl
             Game.level++;
+            Game.player.money += Game.player.cargo;
+            Game.player.cargo = 0;
             this.state.start('LevelComplete');
         }
         
         // stop spawning asteroids after a point to give the illusion that we are leaving the asteroid field
-        else if (Game.distance >= 10000 * Game.level - 800) {
+        else if (Game.distance >= 10000 * Game.level - 1100) {
             //this.asteroidSpawnRate = 10000000;
             this.largeAsteroidSpawnRate = 10000000;
             this.standardAsteroidSpawnRate = 10000000;
@@ -291,6 +296,7 @@ Game.Level1.prototype = {
 //                             "\ntime: " + this.game.time.now + 
 //                             "\nasteroidTimer: " + this.asteroidTimer, 32, 500);
         this.game.debug.text("Distance: " + Math.floor(Game.distance), 800, 20);
+        this.game.debug.text("Cargo: " + Game.player.cargo + "g", 10, 680);
         //this.game.debug.text("damage types: " + Game.player.damageTypes, 10, 680);
         this.game.debug.text("damages: " + Game.player.damages, 10, 700);
     }
