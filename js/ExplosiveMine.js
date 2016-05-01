@@ -89,7 +89,8 @@ Game.ExplosiveMine.prototype = {
         }
         
         //this.checkIfMustExplode(player);
-        this.game.physics.arcade.overlap(player.sprite, this.sprite, this.explode, null, this);
+        this.game.physics.arcade.overlap(player.sprite, this.sprite, this.explode_PlayerCollide, null, this);
+        this.game.physics.arcade.overlap(this.sprite, player.lasers, this.explode_LaserCollide, null, this);
 
         
         
@@ -118,16 +119,24 @@ Game.ExplosiveMine.prototype = {
         }
     },
     
-    explode: function(playerSprite, mineSprite){
+    explode_PlayerCollide: function(playerSprite, mineSprite){
         this.explosionSprite = this.game.add.sprite(mineSprite.body.x, mineSprite.body.y, 'explosion');
-        this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 5, false);
+        this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 10, false);
         this.explosionSprite.animations.play('explodeAnim');
         
-        this.explosionSprite.kill();
         mineSprite.kill();
         
-        console.log('I have exploded!');
+        Game.player.health -= 25;
+                
         
+    },
+    
+    explode_LaserCollide: function(mineSprite, lasers){
+        this.explosionSprite = this.game.add.sprite(mineSprite.body.x, mineSprite.body.y, 'explosion');
+        this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 10, false);
+        this.explosionSprite.animations.play('explodeAnim');
+        
+        mineSprite.kill();                
         
     },
     
@@ -147,6 +156,7 @@ Game.ExplosiveMine.prototype = {
         
     },
     
+    //Unused, for now. 
     moveTowardsPlayer: function(player){
         
         this.game.physics.arcade.accelerateToObject(this.sprite, player.sprite, this.pursuitSpeed );
@@ -157,8 +167,9 @@ Game.ExplosiveMine.prototype = {
     },
     
     checkIfMustExplode: function(player){
-        this.game.physics.arcade.collide(player.sprite, this.sprite, this.explode, null, this);
-        
+        this.game.physics.arcade.overlap(player.sprite, this.sprite, this.explode_PlayerCollide, null, this);
+        this.game.physics.arcade.overlap(this.sprite, player.lasers, this.explode_LaserCollide);
+
     },
     
 
