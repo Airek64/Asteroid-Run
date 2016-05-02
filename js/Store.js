@@ -1,4 +1,4 @@
-Game.LevelComplete = function (game) {
+Game.Store = function (game) {
     
     this.ground = null;
     this.fullScreenToggle = null;
@@ -15,7 +15,7 @@ Game.LevelComplete = function (game) {
     this.downPressed = null;
 };
 
-Game.LevelComplete.prototype = {
+Game.Store.prototype = {
 
     create: function () {
         
@@ -30,29 +30,27 @@ Game.LevelComplete.prototype = {
         this.confirmButton = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.confirmButton.onUp.add(this.select, this);
         
-        this.game.add.sprite(0, 0, 'bg');
         
         this.whiteStyle = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         this.redStyle = { font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle" };
         this.yellowStyle = { font: "bold 16px Arial", fill: "#ff0", boundsAlignH: "center", boundsAlignV: "middle"};
         
-        this.text = this.game.add.text(900, 20, "Money: " + Game.player.money, this.yellowStyle);
+        this.text = this.game.add.text(300, 20, "Money: " + Game.player.money, this.yellowStyle);
         
         this.options = [];
         
         this.options.push(this.game.add.text(150, 180, "Repair", this.whiteStyle));
         
-        this.options.push(this.game.add.text(150, 260, "Shop", this.whiteStyle));
+        this.options.push(this.game.add.text(150, 180, "Shop", this.whiteStyle));
         
-        this.options.push(this.game.add.text(150, 340, "Broker", this.whiteStyle));
+        this.options.push(this.game.add.text(150, 180, "Broker", this.whiteStyle));
         
-        this.options.push(this.game.add.text(150, 420, "Leave", this.whiteStyle));
+        this.options.push(this.game.add.text(150, 180, "Leave", this.whiteStyle));
         
         this.selection = 0;
         
         this.upPressed = false;
         this.downPressed = false;
-        
     },
 
     update: function () {
@@ -86,23 +84,16 @@ Game.LevelComplete.prototype = {
     },
     
     select: function (pointer) {
-        if (this.selection == 0)
+        if (selection == 0)
             this.state.start('Repair');
-        else if (this.selection == 1)
-            //this.state.start('Store');
-            return;
-        else if (this.selection == 2)
+        else if (selection == 1)
+            this.state.start('Store');
+        else if (selection == 2)
             this.state.start('Broker');
-        else if (this.selection == 3) {
-            if (Game.player.cargo != 0)
-                this.state.start('Level1');
-            else 
-                this.game.add.text(300, 420, "Broker For Cargo First!", this.redStyle)
+        else if (selection == 3) {
+            //TODO check if cargo is null
+            this.state.start('level1');
         }
-<<<<<<< HEAD
-		this.state.start('Level2');
-=======
->>>>>>> refs/remotes/origin/gh-pages
 	}, 
 
     quitGame: function () {

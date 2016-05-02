@@ -8,6 +8,9 @@ window.onload = function() {
     game.state.add('LevelComplete', Game.LevelComplete);
     game.state.add('Level2', Game.Level2);
     game.state.add('GameOver', Game.GameOver);
+    game.state.add('Repair', Game.Repair);
+    game.state.add('Store', Game.Store);
+    game.state.add('Broker', Game.Broker);
 	//	Start the Boot state.
 	game.state.start('Boot');
 };

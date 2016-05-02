@@ -1,4 +1,4 @@
-Game.LevelComplete = function (game) {
+Game.Broker = function (game) {
     
     this.ground = null;
     this.fullScreenToggle = null;
@@ -13,9 +13,13 @@ Game.LevelComplete = function (game) {
     this.options = null;
     this.upPressed = null;
     this.downPressed = null;
+    
+    this.tier1 = null;
+    this.tier2 = null;
+    this.tier3 = null;
 };
 
-Game.LevelComplete.prototype = {
+Game.Broker.prototype = {
 
     create: function () {
         
@@ -30,29 +34,47 @@ Game.LevelComplete.prototype = {
         this.confirmButton = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         this.confirmButton.onUp.add(this.select, this);
         
-        this.game.add.sprite(0, 0, 'bg');
         
         this.whiteStyle = { font: "bold 32px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
         this.redStyle = { font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle" };
         this.yellowStyle = { font: "bold 16px Arial", fill: "#ff0", boundsAlignH: "center", boundsAlignV: "middle"};
         
-        this.text = this.game.add.text(900, 20, "Money: " + Game.player.money, this.yellowStyle);
+        this.text = this.game.add.text(300, 20, "Money: " + Game.player.money, this.yellowStyle);
+        this.text = this.game.add.text(130, 100, "Choose Cargo", this.whiteStyle);
         
+        this.tier1 = ['Bovia Salts', 'Bell Eals', 'Snog Weed', 'Red Powder' , 'Odin Oil', 'Garden Gnomes'];
+        this.tier2 = ['Pelpitine', 'Silvertounge', 'Yogson White Greens', 'Fullgain', 'Bomb Powder'];
+        this.tier3 = ['Military-grade Missiles', 'Hyper Fuel', 'Z Matter', 'Dragon\'s Blood', 'God Hand'];
+        
+        var line = 260;
         this.options = [];
+        this.amount = []
+        for (var i = 0; i < 4; i++){
+            var rand = Math.floor(Math.random() * 3 + 1);
+            if (Game.player.notoriety >= 20 && rand == 3) {
+                this.options.push(this.game.add.text(150, line, this.tier3[Math.floor(Math.random() * (this.tier3.length - 1))] , this.whiteStyle));
+                this.amount.push(600);
+                this.game.add.text(450, line, "600", this.whiteStyle);
+            }
+            else if (rand == 2) {
+                this.options.push(this.game.add.text(150, line, this.tier2[Math.floor(Math.random() * (this.tier2.length -1))] , this.whiteStyle));
+                this.amount.push(300);
+                this.game.add.text(450, line, '300', this.whiteStyle);
+            }
+            else {
+                this.options.push(this.game.add.text(150, line, this.tier1[Math.floor(Math.random() * (this.tier1.length - 1))] , this.whiteStyle));
+                this.game.add.text(450, line, '150', this.whiteStyle);
+                this.amount.push(150);
+            }
+            line += 80;
+        }
         
-        this.options.push(this.game.add.text(150, 180, "Repair", this.whiteStyle));
-        
-        this.options.push(this.game.add.text(150, 260, "Shop", this.whiteStyle));
-        
-        this.options.push(this.game.add.text(150, 340, "Broker", this.whiteStyle));
-        
-        this.options.push(this.game.add.text(150, 420, "Leave", this.whiteStyle));
+        this.options.push(this.game.add.text(150, line, "Leave", this.whiteStyle));
         
         this.selection = 0;
         
         this.upPressed = false;
         this.downPressed = false;
-        
     },
 
     update: function () {
@@ -86,40 +108,24 @@ Game.LevelComplete.prototype = {
     },
     
     select: function (pointer) {
-        if (this.selection == 0)
-            this.state.start('Repair');
-        else if (this.selection == 1)
-            //this.state.start('Store');
-            return;
-        else if (this.selection == 2)
-            this.state.start('Broker');
-        else if (this.selection == 3) {
-            if (Game.player.cargo != 0)
-                this.state.start('Level1');
-            else 
-                this.game.add.text(300, 420, "Broker For Cargo First!", this.redStyle)
+        if (this.selection != this.options.length - 1 && Game.player.cargo == 0){
+            Game.player.cargo = this.amount[this.selection];
+            if (Game.player.cargo >= 600) Game.player.notoriety += 20;
+            if (600 > Game.player.cargo > 100) Game.player.notoriety +=10;
+            else Game.player.notoriety += 5;
         }
-<<<<<<< HEAD
-		this.state.start('Level2');
-=======
->>>>>>> refs/remotes/origin/gh-pages
+        else if (this.selection == this.options.length - 1)
+            this.state.start('LevelComplete');
 	}, 
 
     quitGame: function () {
         this.state.start('MainMenu');
-
     },
     
     goFull: function() {
-        
         if (this.scale.isFullScreen)
-        {
             this.scale.stopFullScreen();
-        }
         else
-        {
             this.scale.startFullScreen(false);
-        }
-
     }
 };
