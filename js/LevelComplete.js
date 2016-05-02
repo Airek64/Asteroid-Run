@@ -138,7 +138,7 @@ Game.LevelComplete.prototype = {
             Game.player.health += 20;
             if (Game.player.health > 100) Game.player.health = 100;
         }
-}
+},
 
     select: function (pointer) {
         if (this.selection == 0)
