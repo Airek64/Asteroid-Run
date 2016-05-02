@@ -23,7 +23,6 @@ Game.Preloader.prototype = {
 
 	create: function () {
         Game.player = new Game.Player(this.game);
-        Game.explosivemine = new Game.ExplosiveMine(this.game);
         Game.asteroidSpawner = new Game.AsteroidSpawner(this.game);
         Game.distance = 0;
         Game.level = 1;

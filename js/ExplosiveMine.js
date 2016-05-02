@@ -47,6 +47,7 @@ Game.ExplosiveMine.prototype = {
         this.initY = y;
         
         this.targetAcquired = false;
+        
 
         
         this.sprite = this.game.add.sprite(x,y,'explosiveMine');
@@ -121,7 +122,16 @@ Game.ExplosiveMine.prototype = {
     
     explode_PlayerCollide: function(playerSprite, mineSprite){
         this.explosionSprite = this.game.add.sprite(mineSprite.body.x, mineSprite.body.y, 'explosion');
+        
+        this.game.physics.enable(this.explosionSprite, Phaser.Physics.ARCADE);
+        
+        //Inherit the mine's x velocity, for realism.
+        this.explosionSprite.body.velocity.x = mineSprite.body.velocity.x;
+        
         this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 10, false);
+        //Make the explosion go away 
+        this.explosionSprite.animations.getAnimation('explodeAnim').killOnComplete = true;
+        
         this.explosionSprite.animations.play('explodeAnim');
         
         mineSprite.kill();
@@ -131,11 +141,24 @@ Game.ExplosiveMine.prototype = {
         
     },
     
-    explode_LaserCollide: function(mineSprite, lasers){
-        this.explosionSprite = this.game.add.sprite(mineSprite.body.x, mineSprite.body.y, 'explosion');
-        this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 10, false);
-        this.explosionSprite.animations.play('explodeAnim');
+    explode_LaserCollide: function(mineSprite, laser){
         
+        this.explosionSprite = this.game.add.sprite(mineSprite.body.x, mineSprite.body.y, 'explosion');
+        
+        this.game.physics.enable(this.explosionSprite, Phaser.Physics.ARCADE);
+
+        
+        //Inherit the mine's x velocity, for realism.
+        this.explosionSprite.body.velocity.x = mineSprite.body.velocity.x;
+        
+        this.explosionSprite.animations.add('explodeAnim', [0,1,2,3,4,5,6,7,8,9], 10, false);
+        this.explosionSprite.animations.getAnimation('explodeAnim').killOnComplete = true;
+        
+        this.explosionSprite.animations.play('explodeAnim');
+
+        
+        
+        laser.kill();
         mineSprite.kill();                
         
     },
@@ -143,13 +166,13 @@ Game.ExplosiveMine.prototype = {
     checkForPlayer: function(player){
         
         var angle = this.game.physics.arcade.angleBetween(this.sprite, player.sprite);
-        console.log(angle);
+        //console.log(angle);
         
         //Angle is calculated in radians, so checking if the player is directly to the left of the mine.
         //The system they have for 
         if(this.game.math.fuzzyEqual(angle, 3.1, 0.05)){
             return true;
-            console.log('Target acquired!');
+            //console.log('Target acquired!');
         }
         
         return false;
@@ -171,6 +194,7 @@ Game.ExplosiveMine.prototype = {
         this.game.physics.arcade.overlap(this.sprite, player.lasers, this.explode_LaserCollide);
 
     },
+    
     
 
 }

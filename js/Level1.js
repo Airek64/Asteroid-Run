@@ -34,11 +34,15 @@ Game.Level1 = function (game) {
     this.standardAsteroidSpawnRate = null;
     this.tinyAsteroidTimer = null;
     this.tinyAsteroidSpawnRate = null;
+    //Explosive Mines, a special custom enemy type! They 
+    this.explosiveMineTimer = null;
+    this.explosiveMineSpawnRate = null;
     
     this.largeAsteroidBaseSpawnRate = 1200;
     this.smallAsteroidBaseSpawnRate = 800;
     this.standardAsteroidBaseSpawnRate = 600;
     this.tinyAsteroidBaseSpawnRate = 2000;
+    
     
     
     this.healthbar = null;
@@ -76,19 +80,28 @@ Game.Level1.prototype = {
         
         Game.player.add(100, 100);
         
+        
+        
+        
         Game.asteroidSpawner.init();
         
 //        this.asteroidTimer = 800;
 //        this.asteroidSpawnRate = 150;
-        
+        //Every second, a large asteroid appears.
         this.largeAsteroidTimer = 1000;
         this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate;
+        //Every 0.9 seconds, a small asteroid appears.
         this.smallAsteroidTimer = 900;
         this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate;
+        //Every 0.7 seconds, a standard asteroid appears.
         this.standardAsteroidTimer = 700;
         this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
+        //Every 1.2 seconds, a tiny asteroid appears.
         this.tinyAsteroidTimer = 1200;
         this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
+        //Every ten seconds, an explosive mine appears.
+        this.explosiveMineTimer = 10000;
+        this.explosiveMineSpawnRate = 10000;
         
         this.tester = 0;
         
@@ -106,7 +119,7 @@ Game.Level1.prototype = {
         
         //Testing Mine!
         
-        Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
+        
         
         
         
@@ -126,7 +139,11 @@ Game.Level1.prototype = {
         
         Game.player.update();
         
-        Game.explosivemine.update(Game.player);
+        for(var i = 0; i < Game.asteroidSpawner.mines.length; i++){
+            if(Game.asteroidSpawner.mines[i].exists){
+                Game.asteroidSpawner.mines[i].update(Game.player);
+            }
+        }
         
         Game.asteroidSpawner.update();
         this.asteroidRateChange(Game.player);
@@ -159,6 +176,7 @@ Game.Level1.prototype = {
 //            this.tester +=1;
 //        }
         
+        //Spawn the game objects at the rates specified in the timer variables and such. 
         if (this.game.time.now > this.largeAsteroidTimer){
             Game.asteroidSpawner.spawnLargeAsteroid();
             this.largeAsteroidTimer = this.game.time.now + this.largeAsteroidSpawnRate;
@@ -181,6 +199,13 @@ Game.Level1.prototype = {
             Game.asteroidSpawner.spawnTinyAsteroid();
             this.tinyAsteroidTimer = this.game.time.now + this.tinyAsteroidSpawnRate;
             this.tester +=1;
+        }
+        
+        if (this.game.time.now > this.explosiveMineTimer){
+            Game.asteroidSpawner.spawnExplosiveMine();
+            this.explosiveMineTimer = this.game.time.now + this.explosiveMineSpawnRate;
+            
+            
         }
         
         //this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.asteroids, this.playerHitAsteroid, null, this);
