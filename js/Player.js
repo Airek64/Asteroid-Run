@@ -2,6 +2,9 @@ Game.Player = function(game) {
     
     this.game = game;
     this.health = 100;
+    this.money = 100;
+    this.notoriety = 0;
+    this.cargo = 150;
     this.sprite = null;
     this.hitboxes = null;
     this.cursors = null;
@@ -22,6 +25,7 @@ Game.Player = function(game) {
     this.damageTypes = ['slowTurning', 'reverseTurning' , 'lowerFireRate', 'brokeLaser1', 'brokeLaser2', 'lowerSpeed',
                                 'stuckThrottle'];
     this.damages = [];
+    this.upgrades = [];
 }
 
 Game.Player.prototype = {
