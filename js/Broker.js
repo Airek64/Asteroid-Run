@@ -109,7 +109,7 @@ Game.Broker.prototype = {
     
     select: function (pointer) {
         if (this.selection != this.options.length - 1 && Game.player.cargo == 0){
-            Game.player.cargo = this.amount[this.selection].text;
+            Game.player.cargo = this.amount[this.selection];
             if (Game.player.cargo >= 600) Game.player.notoriety += 20;
             if (600 > Game.player.cargo > 100) Game.player.notoriety +=10;
             else Game.player.notoriety += 5;

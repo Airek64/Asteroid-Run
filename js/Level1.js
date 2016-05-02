@@ -14,6 +14,11 @@ Game.Level1 = function (game) {
     this.tinyAsteroidTimer = null;
     this.tinyAsteroidSpawnRate = null;
     
+    this.largeAsteroidBaseSpawnRate = 1200;
+    this.smallAsteroidBaseSpawnRate = 800;
+    this.standardAsteroidBaseSpawnRate = 600;
+    this.tinyAsteroidBaseSpawnRate = 2000;
+    
     this.healthbar = null;
     this.hitTimer = null;
     this.style = null;
@@ -53,13 +58,13 @@ Game.Level1.prototype = {
         
         // set timers for spawning asteroids
         this.largeAsteroidTimer = 1000;
-        this.largeAsteroidSpawnRate = 1200;
+        this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate;
         this.smallAsteroidTimer = 900;
-        this.smallAsteroidSpawnRate = 800;
+        this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate;
         this.standardAsteroidTimer = 700;
-        this.standardAsteroidSpawnRate = 600;
+        this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
         this.tinyAsteroidTimer = 1200;
-        this.tinyAsteroidSpawnRate = 2000;
+        this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
         
         // for testing
         this.tester = 0;
@@ -80,6 +85,8 @@ Game.Level1.prototype = {
         
         // add timer to delay damage taken from hits
         this.hitTimer = 0;
+        
+        Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
     },
 
     update: function () {
@@ -97,6 +104,7 @@ Game.Level1.prototype = {
         // update player and asteroids
         Game.player.update();
         Game.asteroidSpawner.update();
+        Game.explosivemine.update(Game.player);
         
         // MOVE THIS STUFF TO ASTEROID SPAWNER AT SOME POINT
         
@@ -271,6 +279,30 @@ Game.Level1.prototype = {
     laserHitTinyAsteroid: function (laser, asteroid) {
         asteroid.kill();
         laser.kill();
+    },
+    
+    asteroidRateChange: function(player){
+        if(player.cursors.right.isDown && !player.checkForDamageType('lowerSpeed')){
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate - 500;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate - 500;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate - 500;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate - 500;
+        }
+        else if(player.cursors.left.isDown){
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate + 500;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate + 500;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate + 500;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate + 500;
+        }
+        
+        else{
+            this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate;
+            this.smallAsteroidSpawnRate = this.smallAsteroidBaseSpawnRate;
+            this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
+            this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
+        }
+        
+        
     },
 
     // call back for quiting level
