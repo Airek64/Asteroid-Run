@@ -51,10 +51,13 @@ Game.Level1.prototype = {
         this.bg2 = this.game.add.sprite(this.bg1.width, 0, 'bg');
         
         // create player
-        Game.player.add(100, 100);
+        Game.player.add(500, 100);
         
         // initialize spawner
         Game.asteroidSpawner.init();
+        
+        //create enemy
+        Game.rammingEnemy.add(100,300);
         
         // set timers for spawning asteroids
         this.largeAsteroidTimer = 1000;
@@ -103,8 +106,10 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
+        Game.rammingEnemy.update();
         Game.asteroidSpawner.update();
         Game.explosivemine.update(Game.player);
+        
         
         // MOVE THIS STUFF TO ASTEROID SPAWNER AT SOME POINT
         
@@ -151,6 +156,7 @@ Game.Level1.prototype = {
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.largeAsteroids, this.playerHitLargeAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.standardAsteroids, this.playerHitAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
+        this.game.physics.arcade.collide(Game.player.sprite, Game.rammingEnemy.sprite, this.playerHitRammingEnemy, null, this);
 
         // END COLLISION DETECTION
         
@@ -246,6 +252,13 @@ Game.Level1.prototype = {
         
     },
     
+    //call back for player colliding with enemy ramming ship
+    playerHitRammingEnemy: function (player, enemy) {
+        Game.player.health-=100;
+        Game.player.damage();
+        this.hitTimer=this.game.time.now+250;
+    },
+    
     // call back for laser colliding with any but large or tiny asteroid
     laserHitAsteroid: function (laser, asteroid) {
         laser.kill();
@@ -266,13 +279,8 @@ Game.Level1.prototype = {
         for (var i=-1; i<2; i++) {
             var newAsteroid = Game.asteroidSpawner.smallAsteroids.getFirstExists(false);
             if (newAsteroid!=null) {
-<<<<<<< HEAD
-                newAsteroid.reset(asteroid.x + (Math.random()*i*30), asteroid.y + (Math.random()*(i-1)*30));
-                newAsteroid.body.velocity.y = Math.random() * i * 20;
-=======
                 newAsteroid.reset(asteroid.x + (Math.random()*20*i), asteroid.y + (Math.random()*50*i));
                 newAsteroid.body.velocity.y = Math.random() * 40*i;
->>>>>>> refs/remotes/origin/gh-pages
                 newAsteroid.body.velocity.x = asteroid.body.velocity.x-(Math.random()*20);
             }
         }

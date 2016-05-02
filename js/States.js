@@ -6,7 +6,6 @@ window.onload = function() {
 	game.state.add('MainMenu', Game.MainMenu);
 	game.state.add('Level1', Game.Level1);
     game.state.add('LevelComplete', Game.LevelComplete);
-    game.state.add('Level2', Game.Level2);
     game.state.add('GameOver', Game.GameOver);
     game.state.add('Repair', Game.Repair);
     game.state.add('Store', Game.Store);

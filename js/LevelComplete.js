@@ -99,10 +99,6 @@ Game.LevelComplete.prototype = {
             else 
                 this.game.add.text(300, 420, "Broker For Cargo First!", this.redStyle)
         }
-<<<<<<< HEAD
-		this.state.start('Level2');
-=======
->>>>>>> refs/remotes/origin/gh-pages
 	}, 
 
     quitGame: function () {

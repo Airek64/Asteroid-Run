@@ -1,6 +1,6 @@
 Game.Enemy = function(game) {
     this.game=game;
-    this.health=200;
+    this.health=100;
     this.fireRate=400;
     this.specialFireRate=2000;
     this.fireTimer=0;

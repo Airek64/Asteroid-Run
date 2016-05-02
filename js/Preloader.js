@@ -23,11 +23,9 @@ Game.Preloader.prototype = {
 
 	create: function () {
         Game.player = new Game.Player(this.game);
-<<<<<<< HEAD
         Game.enemy = new Game.Enemy(this.game);
-=======
+        Game.rammingEnemy = new Game.RammingEnemy(this.game);
         Game.explosivemine = new Game.ExplosiveMine(this.game);
->>>>>>> refs/remotes/origin/gh-pages
         Game.asteroidSpawner = new Game.AsteroidSpawner(this.game);
         Game.distance = 0;
         Game.level = 1;
