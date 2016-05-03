@@ -1,10 +1,6 @@
 Game.Enemy = function(game) {
     this.game=game;
     this.health=100;
-    this.fireRate=1000;
-    this.specialFireRate=2000;
-    this.fireTimer=0;
-    this.specialFireTimer=0;
     this.sprite=null;
     this.lasers=null;
     //these variables are for the delay in the enemy movement
@@ -43,18 +39,14 @@ Game.Enemy.prototype = {
         else {
             this.sprite.body.velocity.x=0;
         }
-        if (this.game.time.now-this.specialFireTimer>this.specialFireRate) {
-            //fire special attack
-        }
         //fire lasers at a constant rate
-        if (this.game.time.now-this.fireTimer>this.fireRate) {
+        if (this.game.time.now%200==0) {
             var laser=this.lasers.getFirstExists(false);
             laser.reset(this.sprite.x + 5, this.sprite.y + 10);
-            laser.body.velocity.x = 500;
+            laser.body.velocity.x = 400;
             laser=this.lasers.getFirstExists(false);
             laser.reset(this.sprite.x + 5, this.sprite.y - 10);
-            laser.body.velocity.x = 500;
-            this.fireTimer = this.game.time.now + this.fireRate;   
+            laser.body.velocity.x = 400;  
         }
         //if the enemy is mostly in line with the player, it stops 
         if (this.sprite.y<Game.player.sprite.y+10 && this.sprite.y>Game.player.sprite.y-10) {

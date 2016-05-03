@@ -48,6 +48,7 @@ Game.RammingEnemy.prototype= {
     hitPlayer: function (player) {
         if (this.game.time.now>Game.Level1.hitTimer)
         Game.player.health-=25;
+        Game.player.damage(25);
         Game.Level1.hitTimer=this.game.time.now+250;
         this.sprite.body.velocity.x=-200;
         this.attackSwitch=false;

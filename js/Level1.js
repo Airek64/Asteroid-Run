@@ -37,6 +37,9 @@ Game.Level1 = function (game) {
     this.bg1 = null;
     this.bg2 = null;
     
+    this.enemyAttack1=false;
+    this.enemyAttack2=false;
+    this.enemyTimer=0;
     
     //for testing purposes
     this.tester = null;
@@ -61,10 +64,13 @@ Game.Level1.prototype = {
         
         // create player
         Game.player.add(100, 100);
-        
-
+    
         // initialize spawner
         Game.asteroidSpawner.init();
+        
+        //create enemy
+        Game.rammingEnemy.add(-100,300);
+        Game.enemy.add(-100,400,"right");
         
         // set timers for spawning asteroids
         this.largeAsteroidTimer = 1000;
@@ -115,6 +121,55 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
+        if (Game.rammingEnemy.sprite.x<-100) {
+            Game.rammingEnemy.sprite.body.velocity.x=0;
+        }
+        if (Game.enemy.sprite.x<-100) {
+            Game.enemy.sprite.body.velocity.x=0;
+        }
+        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*Game.player.notoriety>9.99)) {
+            var choice=Math.floor(Math.random() * (2 - 1 + 1)) + 1;
+            if (choice==1) {
+                this.enemyAttack1=true;
+            }
+            else if (choice==2) {
+                this.enemyAttack2=true;
+            }
+        }
+        if (this.enemyAttack1) {
+            if (Game.enemy.sprite.x>-100) {
+                Game.enemy.sprite.body.velocity.x=-200;
+            }
+            Game.player.posOffset=500;
+            Game.rammingEnemy.update();
+            this.enemyTimer++;
+            if (this.enemyTimer>1000) {
+                this.enemyAttack1=false;
+                this.enemyTimer=0;
+                Game.player.posOffset=Game.player.initX;
+            }
+        }
+        else if (this.enemyAttack2) {
+            if (Game.rammingEnemy.sprite.x>-100) {
+                Game.rammingEnemy.sprite.body.velocity.x=-200;
+            }
+            Game.player.posOffset=500;
+            Game.enemy.update();
+            this.enemyTimer++;
+            if (this.enemyTimer>1000) {
+                this.enemyAttack2=false;
+                this.enemyTimer=0;
+                Game.player.posOffset=Game.player.initX;
+            }
+        }
+        else {
+            if (Game.rammingEnemy.sprite.x>-100) {
+                Game.rammingEnemy.sprite.body.velocity.x=-200;
+            }
+            if (Game.enemy.sprite.x>-100) {
+                Game.enemy.sprite.body.velocity.x=-200;
+            }
+        } 
         
         for(var i = 0; i < Game.asteroidSpawner.mines.length; i++){
             if(Game.asteroidSpawner.mines[i].exists){
