@@ -34,6 +34,7 @@ Game.Player.prototype = {
  
     add: function (x,y) {
         // check if a player object already exists
+        this.game.physics.arcade.collide(Game.enemy.lasers, this.sprite, this.laserHit, null, this);
         if (!this.alive) {
             
             this.initX = x;
@@ -230,6 +231,11 @@ Game.Player.prototype = {
                 return true;
         }
         return false;
+    },
+    
+    laserHit: function(player,laser) {
+        this.health-=25
+        laser.kill();
     }
     
 }

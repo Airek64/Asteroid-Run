@@ -140,26 +140,26 @@ Game.Level1.prototype = {
             if (Game.enemy.sprite.x>-100) {
                 Game.enemy.sprite.body.velocity.x=-200;
             }
-            Game.player.posOffset=500;
+            Game.player.posOffsetX=500;
             Game.rammingEnemy.update();
             this.enemyTimer++;
             if (this.enemyTimer>1000) {
                 this.enemyAttack1=false;
                 this.enemyTimer=0;
-                Game.player.posOffset=Game.player.initX;
+                Game.player.posOffsetX=Game.player.initX;
             }
         }
         else if (this.enemyAttack2) {
             if (Game.rammingEnemy.sprite.x>-100) {
                 Game.rammingEnemy.sprite.body.velocity.x=-200;
             }
-            Game.player.posOffset=500;
+            Game.player.posOffsetX=500;
             Game.enemy.update();
             this.enemyTimer++;
             if (this.enemyTimer>1000) {
                 this.enemyAttack2=false;
                 this.enemyTimer=0;
-                Game.player.posOffset=Game.player.initX;
+                Game.player.posOffsetX=Game.player.initX;
             }
         }
         else {
