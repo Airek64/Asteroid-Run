@@ -40,6 +40,11 @@ Game.Preloader.prototype = {
         Game.distance = 0;
         Game.level = 1;
         Game.highscore = 0;
+        
+        this.music = this.add.audio('LevelTheme');
+        this.music.loop = true;
+		this.music.play();
+        this.music.onLoop.add(this.playLevelMusic, this);
 
 	},
 
