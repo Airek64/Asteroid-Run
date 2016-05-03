@@ -21,6 +21,14 @@ Game.Preloader.prototype = {
         this.load.image('enemy1', 'assets/Chaser.png');
         this.load.spritesheet('explosiveMine', 'assets/ExplosiveMine.png', 64,64);
         this.load.spritesheet('explosion', 'assets/Explosion_MetroidFusion.png', 105, 103);
+        
+        //Music loadan'
+        this.load.audio('explosion', 'assets/explosionSound.mp3');
+        this.load.audio('laserCannon', 'assets/laserCannon_Uncropped.mp3');
+        this.load.audio('asteroidBreak', 'assets/rockBreak_USETHIS.mp3');
+        this.load.audio('accelerate', 'assets/powerUp.mp3');
+        
+        this.load.audio('LevelTheme', 'assets/Mistake_the_Getaway.mp3');
 	},
 
 	create: function () {
