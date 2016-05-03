@@ -13,6 +13,16 @@ Game.Level1 = function (game) {
     this.standardAsteroidSpawnRate = null;
     this.tinyAsteroidTimer = null;
     this.tinyAsteroidSpawnRate = null;
+    //Explosive Mines, a special custom enemy type! They 
+    this.explosiveMineTimer = null;
+    this.explosiveMineSpawnRate = null;
+    
+    this.largeAsteroidBaseSpawnRate = 1200;
+    this.smallAsteroidBaseSpawnRate = 800;
+    this.standardAsteroidBaseSpawnRate = 600;
+    this.tinyAsteroidBaseSpawnRate = 2000;
+    
+    
     
     this.largeAsteroidBaseSpawnRate = 1200;
     this.smallAsteroidBaseSpawnRate = 800;
@@ -54,6 +64,7 @@ Game.Level1.prototype = {
         // create player
         Game.player.add(100, 100);
         
+
         // initialize spawner
         Game.asteroidSpawner.init();
         
@@ -69,6 +80,10 @@ Game.Level1.prototype = {
         this.standardAsteroidSpawnRate = this.standardAsteroidBaseSpawnRate;
         this.tinyAsteroidTimer = 1200;
         this.tinyAsteroidSpawnRate = this.tinyAsteroidBaseSpawnRate;
+
+        //Every ten seconds, an explosive mine appears.
+        this.explosiveMineTimer = 10000;
+        this.explosiveMineSpawnRate = 10000;
         
         // for testing
         this.tester = 0;
@@ -90,7 +105,7 @@ Game.Level1.prototype = {
         // add timer to delay damage taken from hits
         this.hitTimer = 0;
         
-        Game.explosivemine.add(this.game.world.centerX, this.game.world.centerY);
+
     },
 
     update: function () {
@@ -107,14 +122,31 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
+<<<<<<< HEAD
         if (Math.random()>.2) {
             this.enemyAttack=true;
         }
         if (this.enemyAttack) {
             Game.rammingEnemy.update();
         }
+=======
+        
+        for(var i = 0; i < Game.asteroidSpawner.mines.length; i++){
+            if(Game.asteroidSpawner.mines[i].exists){
+                Game.asteroidSpawner.mines[i].update(Game.player);
+            }
+        }
+        
+>>>>>>> refs/remotes/origin/gh-pages
         Game.asteroidSpawner.update();
-        Game.explosivemine.update(Game.player);
+        this.asteroidRateChange(Game.player);
+        
+        
+        //this.game.physics.arcade.collide(Game.player.sprite, Game.asteroidSpawner.asteroids);
+        //this.game.physics.arcade.collide(Game.asteroidSpawner.asteroids, Game.asteroidSpawner.asteroids);
+        
+        //Every asteroid of any type collides with every asteroid of any type.
+
         
         
         // MOVE THIS STUFF TO ASTEROID SPAWNER AT SOME POINT
@@ -135,6 +167,7 @@ Game.Level1.prototype = {
         this.game.physics.arcade.collide(Game.player.lasers, Game.asteroidSpawner.standardAsteroids, this.laserHitAsteroid, null, this);
         this.game.physics.arcade.collide(Game.player.lasers, Game.asteroidSpawner.tinyAsteroids, this.laserHitTinyAsteroid, null, this);
         
+
         if (this.game.time.now > this.largeAsteroidTimer){
             Game.asteroidSpawner.spawnLargeAsteroid();
             this.largeAsteroidTimer = this.game.time.now + this.largeAsteroidSpawnRate;
@@ -158,13 +191,22 @@ Game.Level1.prototype = {
             this.tinyAsteroidTimer = this.game.time.now + this.tinyAsteroidSpawnRate;
             this.tester +=1;
         }
-    
+        
+        if (this.game.time.now > this.explosiveMineTimer){
+            Game.asteroidSpawner.spawnExplosiveMine();
+            this.explosiveMineTimer = this.game.time.now + this.explosiveMineSpawnRate;
+            
+            
+        }
+        
+        
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.largeAsteroids, this.playerHitLargeAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.standardAsteroids, this.playerHitAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
 
         // END COLLISION DETECTION
         
+
         // change healthbar size relative to player health (NEEDS FIXING)
         this.healthbar.width = Game.player.health * 5;
         
@@ -292,6 +334,11 @@ Game.Level1.prototype = {
         laser.kill();
     },
     
+    
+    //Regulates the rate at which asteroids spawn. As you go faster (the right cursor is held down, for //lack of any other metric), the asteroid spawn rate becomes faster as well. Vice versa for going //slower.
+    
+    
+
     asteroidRateChange: function(player){
         if(player.cursors.right.isDown && !player.checkForDamageType('lowerSpeed')){
             this.largeAsteroidSpawnRate = this.largeAsteroidBaseSpawnRate - 500;
@@ -315,6 +362,7 @@ Game.Level1.prototype = {
         
         
     },
+
 
     // call back for quiting level
     quitGame: function () {
@@ -342,5 +390,6 @@ Game.Level1.prototype = {
         this.game.debug.text("Cargo: " + Game.player.cargo + "g", 10, 680);
         //this.game.debug.text("damage types: " + Game.player.damageTypes, 10, 680);
         this.game.debug.text("damages: " + Game.player.damages, 10, 700);
+        this.game.debug.text("Health: " + Game.player.health, 10, 650);
     }
 };

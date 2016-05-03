@@ -1,4 +1,39 @@
 Game.LevelComplete = function (game) {
+
+    //  When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
+
+    this.game;      //  a reference to the currently running game (Phaser.Game)
+    this.add;       //  used to add sprites, text, groups, etc (Phaser.GameObjectFactory)
+    this.camera;    //  a reference to the game camera (Phaser.Camera)
+    this.cache;     //  the game cache (Phaser.Cache)
+    this.input;     //  the global input manager. You can access this.input.keyboard, this.input.mouse, as well from it. (Phaser.Input)
+    this.load;      //  for preloading assets (Phaser.Loader)
+    this.math;      //  lots of useful common math operations (Phaser.Math)
+    this.sound;     //  the sound manager - add a sound, play one, set-up markers, etc (Phaser.SoundManager)
+    this.stage;     //  the game stage (Phaser.Stage)
+    this.time;      //  the clock (Phaser.Time)
+    this.tweens;    //  the tween manager (Phaser.TweenManager)
+    this.state;     //  the state manager (Phaser.StateManager)
+    this.world;     //  the game world (Phaser.World)
+    this.particles; //  the particle manager (Phaser.Particles)
+    this.physics;   //  the physics manager (Phaser.Physics)
+    this.rnd;       //  the repeatable random number generator (Phaser.RandomDataGenerator)
+
+    
+    //Control Variables: Quit, Confirm, and Up-Pressed, Down-Pressed
+    this.cursors = null;
+
+    
+    this.quitButton = null;
+    this.confirmButton = null;
+
+    this.upPressed = null;
+    this.downPressed = null;
+    
+    //Text Variables:
+    this.style = null;
+    this.style2 = null;
+
     
     this.ground = null;
     this.fullScreenToggle = null;
@@ -9,10 +44,15 @@ Game.LevelComplete = function (game) {
     this.redStyle = null;
     this.yellowStyle = null;
     this.text = null;
+    
+    
+    
+    this.ground = null;
+    this.fullScreenToggle = null;
+    
+    //Selection Variables:
     this.selection = null;
     this.options = null;
-    this.upPressed = null;
-    this.downPressed = null;
 };
 
 Game.LevelComplete.prototype = {
@@ -85,6 +125,21 @@ Game.LevelComplete.prototype = {
         this.options[this.selection].setStyle(this.redStyle);
     },
     
+    startGame: function (pointer) {
+        if (this.selection != this.options.length -1) {
+            var size = Game.player.damages.length;
+            Game.player.damages = [];
+            for (var i = 0; i < size; i++){
+                if (this.selection != i)
+                    Game.player.damages.push(this.options[i].text);
+            }
+        }
+        else {
+            Game.player.health += 20;
+            if (Game.player.health > 100) Game.player.health = 100;
+        }
+},
+
     select: function (pointer) {
         if (this.selection == 0)
             this.state.start('Repair');

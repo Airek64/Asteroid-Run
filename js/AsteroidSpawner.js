@@ -5,6 +5,7 @@ Game.AsteroidSpawner = function (game) {
     this.standardAsteroids = null;
     this.smallAsteroids = null;
     this.tinyAsteroids = null;
+    this.mines = null;
     this.speed = null;
     
 }
@@ -97,6 +98,21 @@ Game.AsteroidSpawner.prototype = {
             a.outOfBoundsKill = true;
         }
         
+        this.mines = [];
+        
+        for(var i = 0; i < 10; i++){
+            var mine = new Game.ExplosiveMine(this.game);
+            mine.name = 'mine'+i;
+            mine.exists = false;
+            mine.visible = false;
+            
+            mine.checkWorldBounds = true;
+            mine.outOfBoundsKill = true;
+            this.mines.push(mine);
+        }
+        
+        this.speed = -250;
+
         this.speed = -250; // initial speed (velocity) of asteroids
     },
     
@@ -106,6 +122,18 @@ Game.AsteroidSpawner.prototype = {
         this.standardAsteroids.setAll("body.velocity.x", this.speed);
         this.smallAsteroids.setAll("body.velocity.x", this.speed);
         this.tinyAsteroids.setAll("body.velocity.x", this.speed);
+
+        //The Mine speed loop; If the mine isn't in pursuit of the player,
+        //then it drifts slowly to the left.
+        for(var i = 0; i < this.mines.length; i++){
+            
+            if(this.mines[i].exists && !this.mines[i].targetAcquired){
+                this.mines[i].sprite.body.velocity.x = this.speed;
+            }
+            
+        }
+        
+        
         
     },
 
@@ -152,6 +180,22 @@ Game.AsteroidSpawner.prototype = {
             asteroid.reset(1024, Math.random() * 768);
             asteroid.body.velocity.y = Math.random() * 40 - 20;
         }
+    },
+    
+    spawnExplosiveMine: function(){
+        
+        var explosiveMine;
+        for(var i = 0; i < this.mines.length; i++){
+            if(!this.mines[i].exists){
+                this.mines[i].exists = true;
+                this.mines[i].add(1024, Math.random() * 768);
+                //console.log("Spawned explosivemine at "+this.mines[i].initX+" "+ this.mines[i].initY);
+            
+                return;
+                
+            }
+        }
+        
     }
     
 
