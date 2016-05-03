@@ -123,7 +123,13 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*10)+Game.player.notoriety>1) {
+        if (Game.rammingEnemy.sprite.x<-100) {
+            Game.rammingEnemy.sprite.body.velocity.x=0;
+        }
+        if (Game.enemy.sprite.x<-100) {
+            Game.enemy.sprite.body.velocity.x=0;
+        }
+        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*Game.player.notoriety>9.99)) {
             var choice=Math.floor(Math.random() * (2 - 1 + 1)) + 1;
             if (choice==1) {
                 this.enemyAttack1=true;
@@ -139,7 +145,7 @@ Game.Level1.prototype = {
             Game.player.posOffset=500;
             Game.rammingEnemy.update();
             this.enemyTimer++;
-            if (this.enemyTimer>2000) {
+            if (this.enemyTimer>1000) {
                 this.enemyAttack1=false;
                 this.enemyTimer=0;
                 Game.player.posOffset=Game.player.initX;
@@ -152,7 +158,7 @@ Game.Level1.prototype = {
             Game.player.posOffset=500;
             Game.enemy.update();
             this.enemyTimer++;
-            if (this.enemyTimer>2000) {
+            if (this.enemyTimer>1000) {
                 this.enemyAttack2=false;
                 this.enemyTimer=0;
                 Game.player.posOffset=Game.player.initX;
