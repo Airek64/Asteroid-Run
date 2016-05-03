@@ -18,6 +18,7 @@ Game.Player = function(game) {
     this.maxSpeed = -400;
     this.minSpeed = -150;
     this.baseSpeed = -250;
+    this.posOffsetX = null;
     
     this.initX = null;
     this.initY = null;
@@ -36,6 +37,7 @@ Game.Player.prototype = {
             
             this.initX = x;
             this.initY = y;
+            this.posOffset = x;
             
             // add sprite
             this.sprite = this.game.add.sprite(x, y, 'player');
@@ -116,23 +118,29 @@ Game.Player.prototype = {
         }
         // ACCELERATE / DECCELERATE
         
+        if (this.posOffset - this.sprite.body.x > 0)
+            this.sprite.body.velocity.x = 100;
+        else if (this.posOffset - this.sprite.body.x < 0)
+            this.sprite.body.velocity.x = -100;
+        else
+            this.sprite.body.velocity.x = 0;
         
         if (this.cursors.right.isDown){
             //Game.asteroidSpawner.speed -= 25;
-            this.sprite.body.x = this.initX + 5;
+            this.sprite.body.x = this.posOffset + 5;
             if (Game.asteroidSpawner.speed > this.maxSpeed)
                 //Game.asteroidSpawner.speed = this.maxSpeed;
                 Game.asteroidSpawner.speed -= 25;
         }
         else if (this.cursors.left.isDown){
             //Game.asteroidSpawner.speed += 25;
-            this.sprite.body.x = this.initX - 5;
+            this.sprite.body.x = this.posOffset - 5;
             if (Game.asteroidSpawner.speed < this.minSpeed)
                 //Game.asteroidSpawner.speed = this.minSpeed;
                 Game.asteroidSpawner.speed += 25;
         }
         else {
-            this.sprite.body.x = this.initX;
+            this.sprite.body.x = this.posOffset;
             if (Game.asteroidSpawner.speed > this.baseSpeed)
                 Game.asteroidSpawner.speed -= 25;
             else if (Game.asteroidSpawner.speed < this.baseSpeed)
