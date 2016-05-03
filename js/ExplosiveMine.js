@@ -25,7 +25,7 @@ Game.ExplosiveMine = function(game){
     //SFX properties
     
     //The explosion!
-    this.deathSound = this.game.add.audio('explosion');
+    this.deathSound = this.game.add.audio('explosionSound');
     
     //When the mine's about to explode!
     this.beepBeep;
