@@ -43,7 +43,6 @@ Game.Level1 = function (game) {
     this.tester = null;
     
     
-    
 };
 
 Game.Level1.prototype = {
@@ -105,7 +104,6 @@ Game.Level1.prototype = {
         // add timer to delay damage taken from hits
         this.hitTimer = 0;
         
-
     },
 
     update: function () {
