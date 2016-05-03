@@ -18,6 +18,7 @@ Game.Preloader.prototype = {
         this.load.image('asteroid', 'assets/Asteroid.png');
         this.load.image('laser', 'assets/Laser.png');
         this.load.image('rammingShip', 'assets/Pirate.png');
+        this.load.image('enemy1', 'assets/Chaser.png');
         this.load.spritesheet('explosiveMine', 'assets/ExplosiveMine.png', 64,64);
         this.load.spritesheet('explosion', 'assets/Explosion_MetroidFusion.png', 105, 103);
 	},

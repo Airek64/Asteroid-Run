@@ -1,7 +1,7 @@
 Game.Enemy = function(game) {
     this.game=game;
     this.health=100;
-    this.fireRate=400;
+    this.fireRate=1000;
     this.specialFireRate=2000;
     this.fireTimer=0;
     this.specialFireTimer=0;
@@ -16,13 +16,11 @@ Game.Enemy.prototype = {
     //direction is "left" or "right"
     add: function (x,y,direction) {
         // add sprite
-        this.sprite = this.game.add.sprite(x, y, 'player');
+        this.sprite = this.game.add.sprite(x, y, 'enemy1');
+        this.sprite.rotation=(Math.PI/2);
         // change sprite properites
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.immovable = true;
-        if (direction=="right") {
-            this.sprite.body.collideWorldBounds = true;
-        }
         this.sprite.body.allowGravity = false;
         this.sprite.body.setSize(this.sprite.width * 0.7, this.sprite.height * 0.8);
         if (direction=="left") {
@@ -39,6 +37,12 @@ Game.Enemy.prototype = {
     },
     //this is the enemy that tails you and fires lasers at a constant rate
     update: function () {
+        if (this.sprite.x<100) {
+            this.sprite.body.velocity.x=100;
+        }
+        else {
+            this.sprite.body.velocity.x=0;
+        }
         if (this.game.time.now-this.specialFireTimer>this.specialFireRate) {
             //fire special attack
         }

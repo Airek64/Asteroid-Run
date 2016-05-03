@@ -16,9 +16,9 @@ Game.RammingEnemy.prototype= {
         this.sprite.body.allowGravity = false;
         this.sprite.body.setSize(this.sprite.width * 0.7, this.sprite.height * 0.8);
         this.sprite.anchor.set(0.5,0.5);
+        this.sprite.rotation=(Math.PI/2);
     },
     update: function() {
-        this.game.physics.arcade.collide(Game.player.lasers, this.sprite, this.damage, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, this.sprite, this.hitPlayer, null, this);
         if (this.sprite.x<100) {
             this.sprite.body.velocity.x=100;
@@ -42,13 +42,6 @@ Game.RammingEnemy.prototype= {
         }
         else {
             this.sprite.body.velocity.x=0;
-        }
-    },
-    damage: function(laser) {
-        this.health-=25;
-        laser.kill();
-        if (this.health<=0) {
-            this.kill();
         }
     },
     //call back for player colliding with enemy ramming ship

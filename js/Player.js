@@ -83,6 +83,7 @@ Game.Player.prototype = {
     update: function () {
         
         // MOVE UP / MOVE DOWN
+        this.game.physics.arcade.collide(Game.enemy.lasers, this.sprite, this.laserHit, null, this);
         var multiplier = 1;
         if (this.checkForDamageType('reverseTurning'))
             multiplier = -1;
@@ -118,14 +119,14 @@ Game.Player.prototype = {
         }
         // ACCELERATE / DECCELERATE
         
-        if (this.posOffset - this.sprite.body.x > 0.04) {
-            this.sprite.body.velocity.x = 100;
+        if (this.game.physics.arcade.distanceToXY(this.sprite, this.posOffset, this.sprite.y)<10) {
+            this.sprite.body.velocity.x=0;
         }
-        else if (this.posOffset - this.sprite.body.x < 0.004) {
-            this.sprite.body.velocity.x = -100;
+        else if (this.posOffset>this.sprite.x) {
+            this.sprite.body.velocity.x=200;
         }
-        else {
-            this.sprite.body.velocity.x = 0;
+        else if (this.posOffset<this.sprite.x) {
+            this.sprite.body.velocity.x=-200;
         }
         
         if (this.cursors.right.isDown){
@@ -226,6 +227,10 @@ Game.Player.prototype = {
                 return true;
         }
         return false;
+    },
+    laserHit: function(player,laser) {
+        this.health-=10;
+        laser.kill();
     }
     
 }
