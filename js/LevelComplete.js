@@ -80,9 +80,9 @@ Game.LevelComplete.prototype = {
         
         this.options = [];
         
-        this.options.push(this.game.add.text(150, 180, "Repair", this.whiteStyle));
+        this.options.push(this.game.add.text(150, 260, "Repair", this.whiteStyle));
         
-        this.options.push(this.game.add.text(150, 260, "Shop", this.whiteStyle));
+        //this.options.push(this.game.add.text(150, 260, "Shop", this.whiteStyle));
         
         this.options.push(this.game.add.text(150, 340, "Broker", this.whiteStyle));
         
@@ -143,13 +143,17 @@ Game.LevelComplete.prototype = {
     select: function (pointer) {
         if (this.selection == 0)
             this.state.start('Repair');
-        else if (this.selection == 1)
-            //this.state.start('Store');
-            return;
-        else if (this.selection == 2)
-            this.state.start('Broker');
-        else if (this.selection == 3) {
-            if (Game.player.cargo != 0)
+//        else if (this.selection == 1)
+//            //this.state.start('Store');
+//            return;
+        else if (this.selection == 1) {
+            if (Game.player.cargo == null)
+                this.state.start('Broker');
+            else 
+                this.game.add.text(300, 340, "You Already Have Cargo", this.redStyle)
+        }
+        else if (this.selection == 2) {
+            if (Game.player.cargo != null)
                 this.state.start('Level1');
             else 
                 this.game.add.text(300, 420, "Broker For Cargo First!", this.redStyle)

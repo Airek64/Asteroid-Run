@@ -23,6 +23,8 @@ Game.Broker.prototype = {
 
     create: function () {
         
+        this.game.add.sprite(0, 0, 'bg');
+        
         // system buttons
         this.fullScreenToggle = this.input.keyboard.addKey(Phaser.Keyboard.F);
         this.fullScreenToggle.onUp.add(this.goFull, this);
@@ -39,7 +41,7 @@ Game.Broker.prototype = {
         this.redStyle = { font: "bold 32px Arial", fill: "#f00", boundsAlignH: "center", boundsAlignV: "middle" };
         this.yellowStyle = { font: "bold 16px Arial", fill: "#ff0", boundsAlignH: "center", boundsAlignV: "middle"};
         
-        this.text = this.game.add.text(300, 20, "Money: " + Game.player.money, this.yellowStyle);
+        this.text = this.game.add.text(900, 20, "Money: " + Game.player.money, this.yellowStyle);
         this.text = this.game.add.text(130, 100, "Choose Cargo", this.whiteStyle);
         
         this.tier1 = ['Bovia Salts', 'Bell Eals', 'Snog Weed', 'Red Powder' , 'Odin Oil', 'Garden Gnomes'];
@@ -54,16 +56,16 @@ Game.Broker.prototype = {
             if (Game.player.notoriety >= 20 && rand == 3) {
                 this.options.push(this.game.add.text(150, line, this.tier3[Math.floor(Math.random() * (this.tier3.length - 1))] , this.whiteStyle));
                 this.amount.push(600);
-                this.game.add.text(450, line, "600", this.whiteStyle);
+                this.game.add.text(600, line, "600", this.whiteStyle);
             }
             else if (rand == 2) {
                 this.options.push(this.game.add.text(150, line, this.tier2[Math.floor(Math.random() * (this.tier2.length -1))] , this.whiteStyle));
                 this.amount.push(300);
-                this.game.add.text(450, line, '300', this.whiteStyle);
+                this.game.add.text(600, line, '300', this.whiteStyle);
             }
             else {
                 this.options.push(this.game.add.text(150, line, this.tier1[Math.floor(Math.random() * (this.tier1.length - 1))] , this.whiteStyle));
-                this.game.add.text(450, line, '150', this.whiteStyle);
+                this.game.add.text(600, line, '150', this.whiteStyle);
                 this.amount.push(150);
             }
             line += 80;
@@ -108,13 +110,14 @@ Game.Broker.prototype = {
     },
     
     select: function (pointer) {
-        if (this.selection != this.options.length - 1 && Game.player.cargo == 0){
-            Game.player.cargo = this.amount[this.selection];
-            if (Game.player.cargo >= 600) Game.player.notoriety += 20;
-            if (600 > Game.player.cargo > 100) Game.player.notoriety +=10;
+        if (this.selection != this.options.length - 1 && Game.player.cargoAmount == 0){
+            Game.player.cargoAmount = this.amount[this.selection];
+            Game.player.cargo = this.options[this.selection].text;
+            if (Game.player.cargoAmount >= 600) Game.player.notoriety += 20;
+            if (600 > Game.player.cargoAmount > 100) Game.player.notoriety +=10;
             else Game.player.notoriety += 5;
         }
-        else if (this.selection == this.options.length - 1)
+        //else if (this.selection == this.options.length - 1)
             this.state.start('LevelComplete');
 	}, 
 

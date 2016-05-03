@@ -4,7 +4,8 @@ Game.Player = function(game) {
     this.health = 100;
     this.money = 100;
     this.notoriety = 0;
-    this.cargo = 150;
+    this.cargoAmount = 150;
+    this.cargo = 'Spices';
     this.sprite = null;
     this.hitboxes = null;
     this.cursors = null;
@@ -118,16 +119,18 @@ Game.Player.prototype = {
         }
         // ACCELERATE / DECCELERATE
         
-        if (this.posOffset - this.sprite.body.x > 0.004)
-            this.sprite.body.velocity.x = 100;
-        else if (this.posOffset - this.sprite.body.x < 0.004)
-            this.sprite.body.velocity.x = -100;
-        else
+        if (this.game.physics.arcade.distanceToXY(this.sprite, this.posOffset, this.sprite.y) < 10) {
             this.sprite.body.velocity.x = 0;
+        }
+        else if (this.posOffset > this.sprite.x)
+            this.sprite.body.velocity.x = 200;
+        else if (this.posOffset < this.sprite.x)
+            this.sprite.body.velocity.x = -200;
+        
         
         if (this.cursors.right.isDown){
             //Game.asteroidSpawner.speed -= 25;
-            //this.sprite.body.x = this.posOffset + 5;
+            //this.posOffset = this.posOffset + 5;
             if (Game.asteroidSpawner.speed > this.maxSpeed)
                 //Game.asteroidSpawner.speed = this.maxSpeed;
                 Game.asteroidSpawner.speed -= 25;
@@ -205,7 +208,7 @@ Game.Player.prototype = {
         
     },
     
-    damage: function() {
+    damage: function(amount) {
         if (Math.floor(Math.random() * 3)== 1){
             if (this.damages.length == this.damageTypes.length) //avoid infinite loop
                 return;
@@ -214,6 +217,10 @@ Game.Player.prototype = {
             } while (this.checkForDamageType(this.damageTypes[i]));
             this.damages.push(this.damageTypes[i]);
             
+            if (amount >= 40) {
+                this.cargo = null;
+                this.cargoAmount = 0;
+            }
         } 
     },
     

@@ -99,7 +99,6 @@ Game.Level1.prototype = {
         
         // add timer to delay damage taken from hits
         this.hitTimer = 0;
-        
     },
 
     update: function () {
@@ -151,7 +150,46 @@ Game.Level1.prototype = {
         this.game.physics.arcade.collide(Game.player.lasers, Game.asteroidSpawner.standardAsteroids, this.laserHitAsteroid, null, this);
         this.game.physics.arcade.collide(Game.player.lasers, Game.asteroidSpawner.tinyAsteroids, this.laserHitTinyAsteroid, null, this);
         
+        
+        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.largeAsteroids, this.playerHitLargeAsteroid, null, this);
+        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.standardAsteroids, this.playerHitAsteroid, null, this);
+        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
 
+        // END COLLISION DETECTION
+        
+
+        // change healthbar size relative to player health (NEEDS FIXING)
+        this.healthbar.width = Game.player.health * 5;
+        
+        // increment distance relative to asteroid speed
+        Game.distance += -Game.asteroidSpawner.speed / 100;
+        
+        // change level once distance exceeds some point
+        if (Game.distance >= 10000 * Game.level) { // right now level multiplies the distance needed to go before next lvl
+            Game.level++;
+            Game.player.money += Game.player.cargoAmount;
+            Game.player.cargo = null;
+            Game.player.cargoAmount = 0;
+            this.state.start('LevelComplete');
+        }
+        
+        // stop spawning asteroids after a point to give the illusion that we are leaving the asteroid field
+        else if (Game.distance >= 10000 - 1100) {
+            //this.asteroidSpawnRate = 10000000;
+            this.largeAsteroidSpawnRate = 10000000;
+            this.standardAsteroidSpawnRate = 10000000;
+            this.smallAsteroidSpawnRate = 10000000;
+            this.tinyAsteroidSpawnRate = 10000000;
+        }
+        
+        // I don't remember. . .I think we're starting out each level slow 
+        else if (Game.distance >= 6000 + 1000) {
+            this.largeAsteroidSpawnRate = 1200;
+            this.standardAsteroidSpawnRate = 800;
+            this.smallAsteroidSpawnRate = 600;
+            this.tinyAsteroidSpawnRate = 2000;
+        }
+        
         if (this.game.time.now > this.largeAsteroidTimer){
             Game.asteroidSpawner.spawnLargeAsteroid();
             this.largeAsteroidTimer = this.game.time.now + this.largeAsteroidSpawnRate;
@@ -183,45 +221,6 @@ Game.Level1.prototype = {
             
         }
         
-        
-        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.largeAsteroids, this.playerHitLargeAsteroid, null, this);
-        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.standardAsteroids, this.playerHitAsteroid, null, this);
-        this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
-
-        // END COLLISION DETECTION
-        
-
-        // change healthbar size relative to player health (NEEDS FIXING)
-        this.healthbar.width = Game.player.health * 5;
-        
-        // increment distance relative to asteroid speed
-        Game.distance += -Game.asteroidSpawner.speed / 100;
-        
-        // change level once distance exceeds some point
-        if (Game.distance >= 10000 * Game.level) { // right now level multiplies the distance needed to go before next lvl
-            Game.level++;
-            Game.player.money += Game.player.cargo;
-            Game.player.cargo = 0;
-            this.state.start('LevelComplete');
-        }
-        
-        // stop spawning asteroids after a point to give the illusion that we are leaving the asteroid field
-        else if (Game.distance >= 10000 * Game.level - 1100) {
-            //this.asteroidSpawnRate = 10000000;
-            this.largeAsteroidSpawnRate = 10000000;
-            this.standardAsteroidSpawnRate = 10000000;
-            this.smallAsteroidSpawnRate = 10000000;
-            this.tinyAsteroidSpawnRate = 10000000;
-        }
-        
-        // I don't remember. . .I think we're starting out each level slow 
-        else if (Game.distance >= 6000 * (Game.level - 1) + 1000) {
-            this.largeAsteroidSpawnRate = 1200 / Game.level;
-            this.standardAsteroidSpawnRate = 800 / Game.level;
-            this.smallAsteroidSpawnRate = 600 / Game.level;
-            this.tinyAsteroidSpawnRate = 2000 / Game.level;
-        }
-        
         // kill player and go to game over when health is zero
         if (Game.player.health <= 0) {
             // save highscore
@@ -242,7 +241,7 @@ Game.Level1.prototype = {
     playerHitAsteroid: function (player, asteroid) {
         if (this.game.time.now > this.hitTimer) {
             Game.player.health -= asteroid.scale.x * 2.5 + (-asteroid.body.velocity.x / 100) * 1.5;
-            Game.player.damage();
+            Game.player.damage(asteroid.scale.x * 2.5 + (-asteroid.body.velocity.x / 100) * 1.5);
             this.hitTimer = this.game.time.now + 100;
         }
         if (asteroid.y > player.y) {
@@ -260,14 +259,14 @@ Game.Level1.prototype = {
     playerHitLargeAsteroid: function (player, asteroid) {
         if (Game.asteroidSpawner.speed <= -250 && Math.abs(player.y - asteroid.y) < 10) {
             Game.player.health -= 50;
-            Game.player.damage();
+            Game.player.damage(50);
             this.hitTimer = this.game.time.now + 250;
             
         }
         
         else if (this.game.time.now > this.hitTimer) {
             Game.player.health -= asteroid.scale.x * 2.5 + (-asteroid.body.velocity.x / 100) * 1.5;
-            Game.player.damage();
+            Game.player.damage(asteroid.scale.x * 2.5 + (-asteroid.body.velocity.x / 100) * 1.5);
             this.hitTimer = this.game.time.now + 100;
         }
         if (asteroid.y > player.y) {
@@ -370,10 +369,10 @@ Game.Level1.prototype = {
 //        this.game.debug.text("test asteroids: " + this.tester +
 //                             "\ntime: " + this.game.time.now + 
 //                             "\nasteroidTimer: " + this.asteroidTimer, 32, 500);
-        this.game.debug.text("Distance: " + Math.floor(Game.distance), 800, 20);
-        this.game.debug.text("Cargo: " + Game.player.cargo + "g", 10, 680);
+        //this.game.debug.text("Distance: " + Math.floor(Game.distance), 800, 20);
+        this.game.debug.text("Cargo: " + Game.player.cargo + " - " + Game.player.cargoAmount + "g", 10, 680);
         //this.game.debug.text("damage types: " + Game.player.damageTypes, 10, 680);
         this.game.debug.text("damages: " + Game.player.damages, 10, 700);
-        this.game.debug.text("Health: " + Game.player.health, 10, 650);
+        //this.game.debug.text("Health: " + Game.player.health, 10, 650);
     }
 };
