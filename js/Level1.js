@@ -123,7 +123,7 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*10)+Game.player.notoriety>10) {
+        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*10)+Game.player.notoriety>1) {
             var choice=Math.floor(Math.random() * (2 - 1 + 1)) + 1;
             if (choice==1) {
                 this.enemyAttack1=true;
