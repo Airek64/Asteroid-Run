@@ -12,13 +12,17 @@ Game.RammingEnemy.prototype= {
         this.sprite = this.game.add.sprite(x, y, 'player');
         // change sprite properites
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-        this.sprite.body.immovable = true;
+        this.sprite.body.immovable = false;
         this.sprite.body.allowGravity = false;
         this.sprite.body.setSize(this.sprite.width * 0.7, this.sprite.height * 0.8);
         this.sprite.anchor.set(0.5,0.5);
     },
     update: function() {
-        this.game.physics.arcade.collide(Game.player.lasers, this, this.damage, null, this);
+        this.game.physics.arcade.collide(Game.player.lasers, this.sprite, this.damage, null, this);
+        this.game.physics.arcade.overlap(Game.player.sprite, this.sprite, this.hitPlayer, null, this);
+        if (this.sprite.x<100) {
+            this.sprite.body.velocity.x=50;
+        }
         if (this.game.time.now-this.rate>this.counter) {
             this.counter+=this.rate;
             playerY=Game.player.sprite.y;
@@ -46,5 +50,13 @@ Game.RammingEnemy.prototype= {
         if (this.health<=0) {
             this.kill();
         }
-    }
+    },
+    //call back for player colliding with enemy ramming ship
+    hitPlayer: function (player) {
+        if (this.game.time.now>Game.Level1.hitTimer)
+        Game.player.health-=25;
+        Game.Level1.hitTimer=this.game.time.now+250;
+        this.sprite.body.velocity.x=-200;
+        this.attackSwitch=false;
+    },
 }

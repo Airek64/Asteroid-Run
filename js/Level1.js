@@ -27,6 +27,7 @@ Game.Level1 = function (game) {
     this.bg1 = null;
     this.bg2 = null;
     
+    this.enemyAttack=false;
     
     //for testing purposes
     this.tester = null;
@@ -51,13 +52,13 @@ Game.Level1.prototype = {
         this.bg2 = this.game.add.sprite(this.bg1.width, 0, 'bg');
         
         // create player
-        Game.player.add(500, 100);
+        Game.player.add(100, 100);
         
         // initialize spawner
         Game.asteroidSpawner.init();
         
         //create enemy
-        Game.rammingEnemy.add(100,300);
+        Game.rammingEnemy.add(-100,300);
         
         // set timers for spawning asteroids
         this.largeAsteroidTimer = 1000;
@@ -106,7 +107,12 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-        Game.rammingEnemy.update();
+        if (Math.random()>.2) {
+            this.enemyAttack=true;
+        }
+        if (this.enemyAttack) {
+            Game.rammingEnemy.update();
+        }
         Game.asteroidSpawner.update();
         Game.explosivemine.update(Game.player);
         
@@ -156,7 +162,6 @@ Game.Level1.prototype = {
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.largeAsteroids, this.playerHitLargeAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.standardAsteroids, this.playerHitAsteroid, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, Game.asteroidSpawner.smallAsteroids, this.playerHitAsteroid, null, this);
-        this.game.physics.arcade.collide(Game.player.sprite, Game.rammingEnemy.sprite, this.playerHitRammingEnemy, null, this);
 
         // END COLLISION DETECTION
         
@@ -250,13 +255,6 @@ Game.Level1.prototype = {
             asteroid.body.angularVelocity = -50;
         }
         
-    },
-    
-    //call back for player colliding with enemy ramming ship
-    playerHitRammingEnemy: function (player, enemy) {
-        Game.player.health-=100;
-        Game.player.damage();
-        this.hitTimer=this.game.time.now+250;
     },
     
     // call back for laser colliding with any but large or tiny asteroid
