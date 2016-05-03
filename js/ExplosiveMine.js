@@ -25,7 +25,7 @@ Game.ExplosiveMine = function(game){
     //SFX properties
     
     //The explosion!
-    this.deathSound;
+    this.deathSound = this.game.add.audio(explosion');
     
     //When the mine's about to explode!
     this.beepBeep;
@@ -135,6 +135,8 @@ Game.ExplosiveMine.prototype = {
         this.explosionSprite.animations.play('explodeAnim');
         
         mineSprite.kill();
+        
+        this.deathSound.play();
         
         Game.player.health -= 25;
                 
