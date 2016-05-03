@@ -37,9 +37,6 @@ Game.Level1 = function (game) {
     this.bg1 = null;
     this.bg2 = null;
     
-    this.enemyAttack1=false;
-    this.enemyAttack2=false;
-    this.enemyTimer=0;
     
     //for testing purposes
     this.tester = null;
@@ -68,10 +65,6 @@ Game.Level1.prototype = {
 
         // initialize spawner
         Game.asteroidSpawner.init();
-        
-        //create enemy
-        Game.rammingEnemy.add(-100,300);
-        Game.enemy.add(-100,400,"right");
         
         // set timers for spawning asteroids
         this.largeAsteroidTimer = 1000;
@@ -122,52 +115,9 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-        if (!this.enemyAttack1 && !this.enemyAttack2 && (Math.random()*10)+Game.player.notoriety>10) {
-            var choice=Math.floor(Math.random() * (2 - 1 + 1)) + 1;
-            if (choice==1) {
-                this.enemyAttack1=true;
-            }
-            else if (choice==2) {
-                this.enemyAttack2=true;
-            }
-        }
-        if (this.enemyAttack1) {
-            if (Game.enemy.sprite.x>-100) {
-                Game.enemy.sprite.body.velocity.x=-200;
-            }
-            Game.player.posOffset=500;
-            Game.rammingEnemy.update();
-            this.enemyTimer++;
-            if (this.enemyTimer>2000) {
-                this.enemyAttack1=false;
-                this.enemyTimer=0;
-                Game.player.posOffset=Game.player.initX;
-            }
-        }
-        else if (this.enemyAttack2) {
-            if (Game.rammingEnemy.sprite.x>-100) {
-                Game.rammingEnemy.sprite.body.velocity.x=-200;
-            }
-            Game.player.posOffset=500;
-            Game.enemy.update();
-            this.enemyTimer++;
-            if (this.enemyTimer>2000) {
-                this.enemyAttack2=false;
-                this.enemyTimer=0;
-                Game.player.posOffset=Game.player.initX;
-            }
-        }
-        else {
-            if (Game.rammingEnemy.sprite.x>-100) {
-                Game.rammingEnemy.sprite.body.velocity.x=-200;
-            }
-            if (Game.enemy.sprite.x>-100) {
-                Game.enemy.sprite.body.velocity.x=-200;
-            }
-        } 
         
         for(var i = 0; i < Game.asteroidSpawner.mines.length; i++){
-            if (Game.asteroidSpawner.mines[i].exists){
+            if(Game.asteroidSpawner.mines[i].exists){
                 Game.asteroidSpawner.mines[i].update(Game.player);
             }
         }
@@ -181,7 +131,6 @@ Game.Level1.prototype = {
         
         //Every asteroid of any type collides with every asteroid of any type.
 
-        
         
         // MOVE THIS STUFF TO ASTEROID SPAWNER AT SOME POINT
         
@@ -225,7 +174,7 @@ Game.Level1.prototype = {
         }
         
         // stop spawning asteroids after a point to give the illusion that we are leaving the asteroid field
-        else if (Game.distance >= 10000 - 1100) {
+        else if (Game.distance >= 10000 * Game.level - 1100) {
             //this.asteroidSpawnRate = 10000000;
             this.largeAsteroidSpawnRate = 10000000;
             this.standardAsteroidSpawnRate = 10000000;
@@ -404,6 +353,8 @@ Game.Level1.prototype = {
         Game.level = 1;
         Game.player.health = 100;
         Game.player.damages = [];
+        Game.player.cargo = 'spices';
+        Game.player.cargoAmount = 150;
         this.state.start('MainMenu');
     },
     
