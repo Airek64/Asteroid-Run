@@ -16,6 +16,8 @@ Game.Player = function(game) {
     this.fireTimer = null;
     this.fireButton = null;
     
+    this.fireSound = null;
+    
     this.maxSpeed = -400;
     this.minSpeed = -150;
     this.baseSpeed = -250;
@@ -55,6 +57,7 @@ Game.Player.prototype = {
             
             // add sound
             this.hurtSound = this.game.add.audio('hurt');
+            this.fireSound = this.game.add.audio('laserCannon');
 
             // add cursors
             this.cursors = this.game.input.keyboard.createCursorKeys();
@@ -155,6 +158,7 @@ Game.Player.prototype = {
         if (this.fireButton.isDown){
             if (this.game.time.now > this.fireTimer){
                 var laser = this.lasers.getFirstExists(false);
+                this.fireSound.play();
                 
                 if (laser && !this.checkForDamageType('brokeLaser1')){
                     laser.reset(this.sprite.x + 5, this.sprite.y + 10);
