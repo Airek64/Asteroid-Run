@@ -28,7 +28,7 @@ Game.Preloader.prototype = {
         this.load.audio('asteroidBreak', 'assets/rockBreak_USETHIS.mp3', true);
         this.load.audio('accelerate', 'assets/powerUp.mp3', true);
         
-        this.load.audio('LevelTheme', 'assets/Mistake_the_Getaway.mp3', true);
+        this.load.audio('LevelTheme', 'assets/music.wav', true);
 	},
 
 	create: function () {
