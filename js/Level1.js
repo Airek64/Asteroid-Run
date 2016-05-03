@@ -37,6 +37,12 @@ Game.Level1 = function (game) {
     this.bg1 = null;
     this.bg2 = null;
     
+    this.levelTheme = Game.LevelTheme;
+    
+    
+    //Sooounds!
+    this.laserHitAsteroidSound = Game.asteroidBreakSound;
+    
     
     //for testing purposes
     this.tester = null;
@@ -100,6 +106,9 @@ Game.Level1.prototype = {
         
         // add timer to delay damage taken from hits
         this.hitTimer = 0;
+        
+        //BROKE!
+        //this.levelTheme.play();
         
 
     },
@@ -297,6 +306,8 @@ Game.Level1.prototype = {
             }
         }
         asteroid.kill();
+        //BROKEN!
+        //this.laserHitAsteroidSound.play();
     },
     
     // call back for laser colliding with large asteroid
@@ -311,6 +322,9 @@ Game.Level1.prototype = {
             }
         }
         asteroid.kill();
+        //'TIS BROKEN MY LORD
+        //this.laserHitAsteroidSound.play();
+
         
     },
     
