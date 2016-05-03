@@ -2,6 +2,9 @@ Game.Player = function(game) {
     
     this.game = game;
     this.health = 100;
+    this.money = 100;
+    this.notoriety = 0;
+    this.cargo = 150;
     this.sprite = null;
     this.hitboxes = null;
     this.cursors = null;
@@ -11,6 +14,8 @@ Game.Player = function(game) {
     this.fireRate = null;
     this.fireTimer = null;
     this.fireButton = null;
+    
+    this.fireSound = Game.laserCannonSound;
     
     this.maxSpeed = -400;
     this.minSpeed = -150;
@@ -22,6 +27,7 @@ Game.Player = function(game) {
     this.damageTypes = ['slowTurning', 'reverseTurning' , 'lowerFireRate', 'brokeLaser1', 'brokeLaser2', 'lowerSpeed',
                                 'stuckThrottle'];
     this.damages = [];
+    this.upgrades = [];
 }
 
 Game.Player.prototype = {
@@ -139,6 +145,9 @@ Game.Player.prototype = {
         if (this.fireButton.isDown){
             if (this.game.time.now > this.fireTimer){
                 var laser = this.lasers.getFirstExists(false);
+                
+                //Play the lazer sound! ZOMG!
+                this.fireSound.play();
                 
                 if (laser && !this.checkForDamageType('brokeLaser1')){
                     laser.reset(this.sprite.x + 5, this.sprite.y + 10);
