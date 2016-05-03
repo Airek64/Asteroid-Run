@@ -23,8 +23,8 @@ Game.Preloader.prototype = {
         this.load.spritesheet('explosion', 'assets/Explosion_MetroidFusion.png', 105, 103);
         
         //Music loadan'
-        this.load.audio('explosionSound', 'assets/explosionSound.mp3');
-        this.load.audio('laserCannon', 'assets/laserCannon_Uncropped.mp3');
+        this.load.audio('explosionSound', 'assets/explosionSound.mp3', true);
+        this.load.audio('laserCannon', 'assets/laserCannon_Uncropped.mp3', true);
         this.load.audio('asteroidBreak', 'assets/rockBreak_USETHIS.mp3');
         this.load.audio('accelerate', 'assets/powerUp.mp3');
         
