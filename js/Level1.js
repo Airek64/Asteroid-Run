@@ -122,14 +122,13 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-<<<<<<< HEAD
-        if (Math.random()>.2) {
+        if (!this.enemyAttack && Math.random()*Game.player.notoriety>2) {
             this.enemyAttack=true;
         }
         if (this.enemyAttack) {
+            Game.player.posOffset=500;
             Game.rammingEnemy.update();
         }
-=======
         
         for(var i = 0; i < Game.asteroidSpawner.mines.length; i++){
             if(Game.asteroidSpawner.mines[i].exists){
@@ -137,7 +136,6 @@ Game.Level1.prototype = {
             }
         }
         
->>>>>>> refs/remotes/origin/gh-pages
         Game.asteroidSpawner.update();
         this.asteroidRateChange(Game.player);
         

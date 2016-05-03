@@ -21,7 +21,7 @@ Game.RammingEnemy.prototype= {
         this.game.physics.arcade.collide(Game.player.lasers, this.sprite, this.damage, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, this.sprite, this.hitPlayer, null, this);
         if (this.sprite.x<100) {
-            this.sprite.body.velocity.x=50;
+            this.sprite.body.velocity.x=200;
         }
         if (this.game.time.now-this.rate>this.counter) {
             this.counter+=this.rate;

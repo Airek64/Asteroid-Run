@@ -18,7 +18,7 @@ Game.Player = function(game) {
     this.maxSpeed = -400;
     this.minSpeed = -150;
     this.baseSpeed = -250;
-    this.posOffsetX = null;
+    this.posOffset = null;
     
     this.initX = null;
     this.initY = null;
