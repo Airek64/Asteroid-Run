@@ -34,7 +34,6 @@ Game.Player.prototype = {
  
     add: function (x,y) {
         // check if a player object already exists
-        this.game.physics.arcade.collide(Game.enemy.lasers, this.sprite, this.laserHit, null, this);
         if (!this.alive) {
             
             this.initX = x;
@@ -86,6 +85,7 @@ Game.Player.prototype = {
         
         // MOVE UP / MOVE DOWN
         var multiplier = 1;
+        this.game.physics.arcade.collide(Game.enemy.lasers, this.sprite, this.laserHit, null, this);
         if (this.checkForDamageType('reverseTurning'))
             multiplier = -1;
         
@@ -234,7 +234,7 @@ Game.Player.prototype = {
     },
     
     laserHit: function(player,laser) {
-        this.health-=25
+        this.health-=10
         laser.kill();
     }
     
