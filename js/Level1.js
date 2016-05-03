@@ -120,7 +120,7 @@ Game.Level1.prototype = {
         
         // update player and asteroids
         Game.player.update();
-        if (!this.enemyAttack && Math.random()*Game.player.notoriety>2) {
+        if (!this.enemyAttack && Math.random()>.5) {
             this.enemyAttack=true;
         }
         if (this.enemyAttack) {

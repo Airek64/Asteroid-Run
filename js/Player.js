@@ -118,12 +118,15 @@ Game.Player.prototype = {
         }
         // ACCELERATE / DECCELERATE
         
-        if (this.posOffset - this.sprite.body.x > 0.004)
+        if (this.posOffset - this.sprite.body.x > 0.04) {
             this.sprite.body.velocity.x = 100;
-        else if (this.posOffset - this.sprite.body.x < 0.004)
+        }
+        else if (this.posOffset - this.sprite.body.x < 0.004) {
             this.sprite.body.velocity.x = -100;
-        else
+        }
+        else {
             this.sprite.body.velocity.x = 0;
+        }
         
         if (this.cursors.right.isDown){
             //Game.asteroidSpawner.speed -= 25;

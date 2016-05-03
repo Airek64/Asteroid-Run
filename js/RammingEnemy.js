@@ -2,14 +2,14 @@ Game.RammingEnemy = function(game) {
     this.game=game;
     this.health=100;
     this.sprite=null;
-    this.rate=10000;
+    this.rate=7500;
     this.counter=0;
     this.attackSwitch=false;
     this.playerY=0;
 }
 Game.RammingEnemy.prototype= {
     add:function(x,y) {
-        this.sprite = this.game.add.sprite(x, y, 'player');
+        this.sprite = this.game.add.sprite(x, y, 'rammingShip');
         // change sprite properites
         this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
         this.sprite.body.immovable = false;
@@ -21,7 +21,7 @@ Game.RammingEnemy.prototype= {
         this.game.physics.arcade.collide(Game.player.lasers, this.sprite, this.damage, null, this);
         this.game.physics.arcade.overlap(Game.player.sprite, this.sprite, this.hitPlayer, null, this);
         if (this.sprite.x<100) {
-            this.sprite.body.velocity.x=200;
+            this.sprite.body.velocity.x=100;
         }
         if (this.game.time.now-this.rate>this.counter) {
             this.counter+=this.rate;
